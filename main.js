@@ -5,7 +5,23 @@ let form = document.querySelector('form');
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try {
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch (err) {
+        if (err instanceof SyntaxError) {
+          if (err.message.includes("Unexpected end of input")) {
+            output.innerHTML = "Error: please fill both fields"
+          } else if (err.message.includes("Invalid or unexpected token")) {
+            output.innerHTML = "Error: please input numbers only"
+          } else {
+            output.innerHTML = "An unknown error occurred."
+            throw err;
+          }
+        }
+      } finally {
+        document.querySelector('#first-num').focus();
+      }
+      
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
