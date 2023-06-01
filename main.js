@@ -1,3 +1,42 @@
+class DivByZeroError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "DivByZeroError";
+  }
+}
+
+function computeValue(firstNum, secondNum, operator) {
+  let nFirstNum;
+  let nSecondNum;
+  nFirstNum = Number(firstNum);
+  nSecondNum = Number(secondNum);
+  if (isNaN(nFirstNum)) {
+    throw new SyntaxError("invalid number entered");
+  }
+  if (isNaN(nSecondNum)) {
+    throw new SyntaxError("invalid number entered")
+  }
+  let result;
+  switch(operator) {
+    case '+':
+      result = nFirstNum + nSecondNum;
+      break;
+    case '-':
+      result = nFirstNum - nSecondNum;
+      break;
+    case '*':
+      result = nFirstNum * nSecondNum;
+      break;
+    case '/':
+      if (nSecondNum === 0) {
+        throw new DivByZeroError("cannot divide by zero");
+      }
+      result = nFirstNum / nSecondNum;
+      break;
+  }
+  return result;
+}
+
 let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -6,22 +45,18 @@ let form = document.querySelector('form');
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
       try {
-        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+        output.innerHTML = computeValue(firstNum, secondNum, operator);
       } catch (err) {
         if (err instanceof SyntaxError) {
-          if (err.message.includes("Unexpected end of input")) {
-            output.innerHTML = "Error: please fill both fields"
-          } else if (err.message.includes("Invalid or unexpected token")) {
-            output.innerHTML = "Error: please input numbers only"
-          } else {
-            output.innerHTML = "An unknown error occurred."
-            throw err;
-          }
+          output.innerHTML = "Please enter valid numbers"
+        } else if (err instanceof DivByZeroError) {
+          output.innerHTML = "Cannot divide by zero"
+        } else {
+          throw err;
         }
       } finally {
         document.querySelector('#first-num').focus();
       }
-      
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
