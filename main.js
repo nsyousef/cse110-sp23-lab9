@@ -5,6 +5,10 @@ class DivByZeroError extends Error {
   }
 }
 
+window.onerror = function(message, url, line, col, error) {
+  console.log(`ERROR: ${error} ${message}\nat url: ${url}\nline ${line} col ${col}`)
+};
+
 function computeValue(firstNum, secondNum, operator) {
   let nFirstNum;
   let nSecondNum;
@@ -165,3 +169,8 @@ function fibonacciBaseCase(num) {
     return 1;
   }
 }
+
+document.getElementById("trigger-global-error").addEventListener('click', function() {
+  let result = computeValue("3", "0", "/");
+  console.log(result);
+});
