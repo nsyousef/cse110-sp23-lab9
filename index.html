@@ -46,7 +46,14 @@
       <button id="trigger-global-error">Trigger a Global Error</button>
     </section>
   </main>
-
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "5bc767fc9571458784ec4f14d396f3af"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+                        
   <script src="main.js"></script>
 </body>
 
